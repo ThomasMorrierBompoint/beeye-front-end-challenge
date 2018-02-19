@@ -14,7 +14,6 @@
 *.sig
 
 pkg/
-src/
 
 ### Compressed ###
 *.7z
