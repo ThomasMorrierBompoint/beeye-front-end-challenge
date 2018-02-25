@@ -23,57 +23,20 @@ let BlizzData;
             this.loadedSeason = 0;
             this.requests = {};
             this.GetSeasonData = function (seasonDesc) {
-                var className = 'rift-' + seasonDesc.hero_class_string;
-                var url = _this.buildUrl(_this.origin, _this.locale, Operation.GetLeaderboardDataByName).replace('{season}', _this.loadedSeason.toString()).replace('{name}', className);
-                if (_this.loadedSeason == 0) {
-                    return;
-                }
-                $.get(url, {}, function (data) {
-                  if (!_this.requests[seasonDesc.season]) {
-                    _this.requests[seasonDesc.season] = {};
-                  }
-                  _this.requests[seasonDesc.season][seasonDesc.hero_class_string] = data;
+                var loadedSeason = seasonDesc.seasonId || _this.loadedSeason;
+                var className = 'rift-' + (seasonDesc.heroClass || seasonDesc.hero_class_string);
+                var url = _this.buildUrl(_this.origin, _this.locale, Operation.GetLeaderboardDataByName).replace('{season}', loadedSeason.toString()).replace('{name}', className);
+                return $.get(url, {}, function (data) {
+                  // console.log('Loaded', data);
                 });
             };
         }
-        App.prototype.reload = function () {
-            var v = parseInt($('#seasonNumber').val().toString());
-            if (isNaN(v)) {
-                return;
-            }
-            ;
-            this.LeaderBoardsTmp([]); //clean list
-            this.GetSeasonsLeaderboarsList(v);
-        };
-        App.prototype.GetSeasonsLeaderboarsList = function (season) {
+        App.prototype.GetSeasonsLeaderboardsList = function (season) {
             var _this = this;
             if (season === void 0) { season = 12; }
-            if (this.token == '') {
-                this.fetchToken(function () {
-                    _this.GetSeasonsLeaderboarsList(season);
-                });
-                return;
-            }
             var url = this.buildUrl(this.origin, this.locale, Operation.GetLeaderboardsList).replace('{season}', season.toString());
-            $.get(url, {}, function (data) {
-                console.log('Loaded ' + data.leaderboard.length + ' leaderboards');
-                //filtering : Only 'not hardcore' and only teamsize = 1 for this example
-                var finalRes = [];
-                for (var i = 0; i < data.leaderboard.length; i++) {
-                    if ((!data.leaderboard[i].team_size) || (data.leaderboard[i].team_size != 1)) {
-                        continue;
-                    }
-                    //if (data.leaderboard[i].hardcore) { //there is a small bug in APIs, some of 'hardcore' ladders don't have this field
-                    //    continue;
-                    //}
-                    //workaround
-                    if (data.leaderboard[i].ladder.href.indexOf('-hardcore-') >= 0) {
-                        continue;
-                    }
-                    finalRes.push(data.leaderboard[i]);
-                }
-                _this.LeaderBoardsTmp = finalRes;
-                _this.loadedSeason = season;
+            return $.get(url, {}, function (data) {
+                // console.log('Loaded ' + data.leaderboard.length + ' leaderboards');
             });
         };
         App.prototype.fetchToken = function (callBack) {
@@ -83,7 +46,7 @@ let BlizzData;
             $.get(url, {}, function (data) {
                 _this.token = data.access_token;
                 if (callBack != null) {
-                    callBack();
+                    callBack(data);
                 }
             });
         };

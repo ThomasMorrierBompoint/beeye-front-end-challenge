@@ -1,6 +1,13 @@
 # front-end
 
-> A Vue.js project
+> A Beeye front-end challenge project
+
+## Personal Note
+
+### Problems encountered
+- Vuex logger is very slow (deepCopy), took me a while to figure it out.
+  - Const TOTAL_SEASONS, MAX_TOP_PLAYERS, MAX_ROW are reduce in dev mode.
+  - https://forum.vuejs.org/t/adding-many-objects-to-vuex-state-is-slow/10492/6;
 
 ## Build Setup
 
