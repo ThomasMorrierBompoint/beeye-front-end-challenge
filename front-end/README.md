@@ -4,10 +4,19 @@
 
 ## Personal Note
 
+### Think that went well
+- I've done some Vue.js before but I starting with Vuetify.
+  - It went pretty smoothly it is well documented thx to the community.
+
 ### Problems encountered
+- To be honest I was a litle overwhelmed by the amount of data.
+  - I've work with API's before but I kind of forgot how much time it takes to get confortable with the data.
 - Vuex logger is very slow (deepCopy), took me a while to figure it out.
-  - Const TOTAL_SEASONS, MAX_TOP_PLAYERS, MAX_ROW are reduce in dev mode.
-  - https://forum.vuejs.org/t/adding-many-objects-to-vuex-state-is-slow/10492/6;
+  - Quick fix Const TOTAL_SEASONS, MAX_TOP_PLAYERS, MAX_ROW are reduce in DEV mode.
+  - A better solution would be to merge a couple of commit together making fewer call to deepCopy.
+  - https://forum.vuejs.org/t/adding-many-objects-to-vuex-state-is-slow/10492/6.
+- Airbnb Linter is too agressive. I should have gone with something less restrictive it is a bit anoying (I may over right some rules if I have time later on).
+- Data model is a bit messy. I'm still in a draft mode. I like to play around with data before I fix my mind on a particular data set. I try to go fast and not go to specific to improve it once I refactor.
 
 ## Build Setup
 

@@ -60,18 +60,21 @@ export default {
       getSeasonsLeaderboardsList: 'api/getSeasonsLeaderboardsList',
       getSeasonHeroClassData: 'api/getSeasonHeroClassData',
     }),
-    displaySnackbar({ text, timeout }) {
-      this.snackbar = false;
+    displaySnackbar({ text, delay, timeout }) {
       setTimeout(() => {
-        this.text = text;
-        this.timeout = timeout;
-        this.snackbar = true;
-      }, 50);
+        //  Quick fix, As to be async if not snackbar wont appear
+        this.snackbar = false;
+        setTimeout(() => {
+          this.text = text;
+          this.timeout = timeout;
+          this.snackbar = true;
+        }, 50);
+      }, delay);
     },
     getAllSeasonsLeaderboardsList() {
       //  CHANGED Quick fix should be a Promise or async instead of setTimeout
       const TOTAL_SEASONS = (this.DEBUG) ? 3 : 12;
-      const DELAY = 100;
+      const DELAY = 150;
 
       let seasonNumber = 0;
 
@@ -79,15 +82,21 @@ export default {
         // eslint-disable-next-line
         setTimeout(() => this.getSeasonsLeaderboardsList({ season: ++seasonNumber }), ind * DELAY);
       }
-      setTimeout(() => {
-        this.displaySnackbar({ text: 'Seasons leaderboards loaded', timeout: 3000 });
-        this.getAllSeasonsAllClassData();
-      }, TOTAL_SEASONS * DELAY);
+
+      this.displaySnackbar({
+        text: 'Seasons leaderboards loaded',
+        delay: (TOTAL_SEASONS + 2) * DELAY,
+        timeout: 3000,
+      });
+      this.getAllSeasonsAllClassData();
     },
     getAllSeasonsAllClassData() {
       //  CHANGED Quick fix should be a Promise or async instead of setTimeout
+      //  Avoid double loop concat seasons class in 1 array then itterate
+      //  getSeasonHeroClassData().then if ind < array.length call getSeasonHeroClassData again
+
       const seasonsLeaderboardsLists = this.seasonsLeaderboardsLists();
-      const DELAY = (this.DEBUG) ? 500 : 300;
+      const DELAY = (this.DEBUG) ? 400 : 300;
 
       this.indeterminate = false;
 
@@ -103,11 +112,14 @@ export default {
           }, allHeroesClass.length * DELAY);
         }
       }
-      setTimeout(() => {
-        this.displaySnackbar({ text: 'Season heroes class loaded', timeout: 3000 });
-        this.isAppRdy = true;
-        this.progressColor = 'success';
-      }, allHeroesClass.length * DELAY);
+
+      this.displaySnackbar({
+        text: 'Season heroes class loaded',
+        delay: (allHeroesClass.length + 2) * DELAY,
+        timeout: 3000,
+      });
+      this.progressColor = 'success';
+      this.isAppRdy = true;
       /* eslint-enable */
     },
   },

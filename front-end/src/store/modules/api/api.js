@@ -72,6 +72,7 @@ const actions = {
               TOP_PLAYERS_TMP[seasonId].push({ heroClass, playerRank: playerTmp.Rank, RiftLevel: playerTmp.RiftLevel });
             }
           });
+
           const seasonHeroClass = { title: data.title[state.locale] || data.title['en_US'], row: players };
           commit(types.SET_SEASON_HERO_CLASS, { seasonId, heroClass, seasonHeroClass });
 
