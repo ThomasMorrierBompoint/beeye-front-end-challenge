@@ -13,6 +13,7 @@
       <v-progress-linear :indeterminate="indeterminate" :value="progressStatus" height="10" :color="progressColor">
       </v-progress-linear>
     </div>
+    <seasons-tabs></seasons-tabs>
     <v-content>
       <router-view/>
     </v-content>
@@ -20,24 +21,32 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
+import SeasonsTabs from './components/seasons-tabs/seasons-tabs';
 
 export default {
   name: 'App',
+  components: {
+    'seasons-tabs': SeasonsTabs,
+  },
   data() {
     return {
       DEBUG: false,
       indeterminate: true,
-      progressStatus: 0,
       progressColor: 'info',
-      isAppRdy: false,
+      progressStatus: 0,
       snackbar: false,
       timeout: 5000,
       text: '',
     };
   },
+  computed: {
+    ...mapGetters({
+      appIsRdy: 'api/appIsRdy',
+    }),
+  },
   created() {
-    this.DEBUG = this.debug();
+    this.DEBUG = this.appDEBUG();
     this.getAccessToken()
       .then((text) => {
         this.displaySnackbar({ text, timeout: 2000 });
@@ -49,9 +58,9 @@ export default {
   },
   methods: {
     ...mapGetters({
-      debug: 'api/debug',
+      appDEBUG: 'api/appDEBUG',
+      appTOTAL_SEASONS: 'api/appTOTAL_SEASONS',
       seasonsTopPlayers: 'api/seasonsTopPlayers',
-      seasonsHeroesClass: 'api/seasonsHeroesClass',
       sharedHeroesClassData: 'api/sharedHeroesClassData',
       seasonsLeaderboardsLists: 'api/seasonsLeaderboardsLists',
     }),
@@ -59,6 +68,9 @@ export default {
       getAccessToken: 'api/getAccessToken',
       getSeasonsLeaderboardsList: 'api/getSeasonsLeaderboardsList',
       getSeasonHeroClassData: 'api/getSeasonHeroClassData',
+    }),
+    ...mapMutations({
+      setAppStateRdy: 'api/SET_APP_STATE_RDY',
     }),
     displaySnackbar({ text, delay, timeout }) {
       setTimeout(() => {
@@ -73,8 +85,10 @@ export default {
     },
     getAllSeasonsLeaderboardsList() {
       //  CHANGED Quick fix should be a Promise or async instead of setTimeout
-      const TOTAL_SEASONS = (this.DEBUG) ? 3 : 12;
-      const DELAY = 150;
+      //  getSeasonsLeaderboardsList().then if ind < array.length call getSeasonHeroClassData again
+      const TOTAL_SEASONS = this.appTOTAL_SEASONS();
+      const DELAY = 250;
+      const TOTAL_DELAY = (TOTAL_SEASONS + 2) * DELAY;
 
       let seasonNumber = 0;
 
@@ -85,10 +99,11 @@ export default {
 
       this.displaySnackbar({
         text: 'Seasons leaderboards loaded',
-        delay: (TOTAL_SEASONS + 2) * DELAY,
+        delay: TOTAL_DELAY,
         timeout: 3000,
       });
-      this.getAllSeasonsAllClassData();
+
+      setTimeout(() => this.getAllSeasonsAllClassData(), TOTAL_DELAY);
     },
     getAllSeasonsAllClassData() {
       //  CHANGED Quick fix should be a Promise or async instead of setTimeout
@@ -96,7 +111,7 @@ export default {
       //  getSeasonHeroClassData().then if ind < array.length call getSeasonHeroClassData again
 
       const seasonsLeaderboardsLists = this.seasonsLeaderboardsLists();
-      const DELAY = (this.DEBUG) ? 400 : 300;
+      const DELAY = (this.DEBUG) ? 400 : 350;
 
       this.indeterminate = false;
 
@@ -118,8 +133,11 @@ export default {
         delay: (allHeroesClass.length + 2) * DELAY,
         timeout: 3000,
       });
-      this.progressColor = 'success';
-      this.isAppRdy = true;
+
+      setTimeout(() => {
+        this.progressColor = 'primary';
+        this.setAppStateRdy({ isRdy: true });
+      }, (allHeroesClass.length + 2) * DELAY);
       /* eslint-enable */
     },
   },
@@ -129,5 +147,6 @@ export default {
 <style scoped>
   .progress-linear {
     margin-top: 0;
+    margin-bottom: 0;
   }
 </style>

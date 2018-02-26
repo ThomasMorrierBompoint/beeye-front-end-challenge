@@ -4,14 +4,15 @@
 
 ## Personal Note
 
-### Think that went well
-- I've done some Vue.js before but I starting with Vuetify.
-  - It went pretty smoothly it is well documented thx to the community.
+### Things that went well
+- I've done some Vue.js before but I'm fairly new to Vuetify.
+  - It was pretty smooth it is well documented, the community is awesome.
+  - I did the layout for computer interfaces leaving mobile for later on.
 
 ### Problems encountered
 - To be honest I was a litle overwhelmed by the amount of data.
-  - I've work with API's before but I kind of forgot how much time it takes to get confortable with the data.
-- Vuex logger is very slow (deepCopy), took me a while to figure it out.
+  - I've work with API's before but I kind of forgot how much time it takes to get very confortable with the data flow.
+- Vuex logger is very slow because of (deepCopy function), took me a while to figure it out.
   - Quick fix Const TOTAL_SEASONS, MAX_TOP_PLAYERS, MAX_ROW are reduce in DEV mode.
   - A better solution would be to merge a couple of commit together making fewer call to deepCopy.
   - https://forum.vuejs.org/t/adding-many-objects-to-vuex-state-is-slow/10492/6.

@@ -1,17 +1,24 @@
 import * as types from '../../mutation-types';
 import blizzD3 from '../../../utils/blizz-d3';
+import appConst from '../const/const';
 // import mock from './mock';
 
-const debug = process.env.NODE_ENV !== 'production';
-const MAX_ROW = (debug) ? 25 : 200;  //  If you go higher turn of vuex logger
-const MAX_TOP_PLAYERS = (debug) ? 22 : 102;  //  102 => give 100 Top player
+const DEBUG = process.env.NODE_ENV !== 'production';
+const TOTAL_SEASONS = (DEBUG) ? 3 : 12;  //  If you go higher turn of vuex logger
+const MAX_ROW = (DEBUG) ? 25 : 125;
+const MAX_TOP_PLAYERS = (DEBUG) ? 22 : 102;  //  102 => give 100 Top player
 const TOP_PLAYERS_TMP = {};
-// const MOCK = (debug) ? mock : '';
+// const MOCK = (DEBUG) ? mock : '';
 
 const state = {
-  debug,
-  origin: 'us',
-  locale: 'en_US',
+  app: {
+    DEBUG,
+    TOTAL_SEASONS,
+    locale: 'en_US',
+    origin: 'us',
+    isRdy: false,
+    assets: appConst.assets,
+  },
   credential: {},
   seasonsTopPlayers: {},
   seasonsHeroesClass: {},
@@ -20,7 +27,10 @@ const state = {
 };
 
 const getters = {
-  debug: () => state.debug,
+  appDEBUG: () => state.app.DEBUG,
+  appIsRdy: () => state.app.isRdy,
+  appAssets: () => state.app.assets,
+  appTOTAL_SEASONS: () => state.app.TOTAL_SEASONS,
   seasonsTopPlayers: () => state.seasonsTopPlayers,
   seasonsHeroesClass: () => state.seasonsHeroesClass,
   sharedHeroesClassData: () => state.sharedHeroesClassData,
@@ -60,6 +70,7 @@ const actions = {
           const players = [];
           let playerTmp = {};
 
+          //  Most of this function should be refactor and import from another file
           if (!TOP_PLAYERS_TMP[seasonId]) { TOP_PLAYERS_TMP[seasonId] = []; }
 
           data.row = data.row.splice(0, MAX_ROW);
@@ -73,7 +84,7 @@ const actions = {
             }
           });
 
-          const seasonHeroClass = { title: data.title[state.locale] || data.title['en_US'], row: players };
+          const seasonHeroClass = { title: data.title[state.app.locale] || data.title['en_US'], row: players };
           commit(types.SET_SEASON_HERO_CLASS, { seasonId, heroClass, seasonHeroClass });
 
           TOP_PLAYERS_TMP[seasonId].sort(function(a, b) {
@@ -83,7 +94,7 @@ const actions = {
           commit(types.SET_TOP_PLAYERS, { seasonId, topPlayers: TOP_PLAYERS_TMP[seasonId] });
 
           commit(types.SET_SHARED_HEROES_CLASS_DATA, { type: 'column', data: data.column });
-          commit(types.SET_SHARED_HEROES_CLASS_DATA, { type: 'lastUpdateTime', data: data.last_update_time });
+          commit(types.SET_SHARED_HEROES_CLASS_DATA, { type: `${seasonId}seasonLastUpdateTime`, data: data.last_update_time });  //  CHANGED Take only one date per season
         } else { console.warn('Error did not receive expected data type: ', data); }
       })
       .fail((e) => console.log('Error with GetSeasonData: ', e));
@@ -128,6 +139,9 @@ const mutations = {
       state.seasonsTopPlayers[seasonId] = [];
     }
     state.seasonsTopPlayers[seasonId] = topPlayers;
+  },
+  [types.SET_APP_STATE_RDY](state, { isRdy }) {
+    state.app.isRdy = isRdy;
   },
 };
 /* eslint-enable */
