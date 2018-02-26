@@ -19,6 +19,8 @@ Vue.use(Vuetify, { theme: {
 
 Vue.config.productionTip = false;
 
+window.location.hash = '#';  //  Reset Routing on reload
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

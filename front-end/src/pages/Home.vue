@@ -1,9 +1,10 @@
 <template>
   <v-container fluid>
+    <br><br>
     <h1 class="text-xs-center">
       {{ (appIsRdy) ? 'Beeye front-end challenge Ready!' : 'Loading... few seconds to go' }}
     </h1>
-    <br><br>
+    <br><br><br>
     <h3 v-if="!appIsRdy" class="text-xs-center">
       It was very cool to do. I hope you will like it!<br>
       I left some comments inside README.md.
@@ -15,7 +16,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'App',
+  name: 'Home',
   computed: {
     ...mapGetters({
       appIsRdy: 'api/appIsRdy',

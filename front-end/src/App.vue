@@ -13,7 +13,7 @@
       <v-progress-linear :indeterminate="indeterminate" :value="progressStatus" height="10" :color="progressColor">
       </v-progress-linear>
     </div>
-    <seasons-tabs></seasons-tabs>
+    <seasons-tabs v-if="appIsRdy"></seasons-tabs>
     <v-content>
       <router-view/>
     </v-content>
@@ -111,7 +111,7 @@ export default {
       //  getSeasonHeroClassData().then if ind < array.length call getSeasonHeroClassData again
 
       const seasonsLeaderboardsLists = this.seasonsLeaderboardsLists();
-      const DELAY = (this.DEBUG) ? 400 : 350;
+      const DELAY = (this.DEBUG) ? 250 : 400;
 
       this.indeterminate = false;
 
@@ -137,6 +137,7 @@ export default {
       setTimeout(() => {
         this.progressColor = 'primary';
         this.setAppStateRdy({ isRdy: true });
+        this.$router.push({ path: `/season/1` });
       }, (allHeroesClass.length + 2) * DELAY);
       /* eslint-enable */
     },

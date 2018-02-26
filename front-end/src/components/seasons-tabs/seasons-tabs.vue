@@ -4,7 +4,7 @@
     <v-tab
       v-for="i in appTOTAL_SEASONS"
       :key="i"
-      :href="'#tab-' + i"
+      :href="'#/season/' + i"
       v-on:click="getSeasonHeroesClass(i)"
       >
       Season {{ i }}
@@ -13,16 +13,21 @@
       <v-tab-item
         v-for="i in appTOTAL_SEASONS"
         :key="i"
-        :id="'tab-' + i"
+        :id="'/season/' + i"
         >
         <v-card
           v-for="seasonHeroAvatar in seasonHeroesClassAvatar"
+          :key="seasonHeroAvatar.heroClass"
           flat
+          hover
           >
           <v-card-text>
-            <v-avatar>
-              <img v-bind:src="seasonHeroAvatar.imgUrl" v-bind:alt="seasonHeroAvatar.title" />
-            </v-avatar>
+            <v-tooltip bottom>
+              <v-avatar slot="activator">
+                <img v-bind:src="seasonHeroAvatar.imgUrl" v-bind:alt="seasonHeroAvatar.title" />
+              </v-avatar>
+              <span>{{ seasonHeroAvatar.title }}</span>
+            </v-tooltip>
           </v-card-text>
         </v-card>
       </v-tab-item>
@@ -40,6 +45,11 @@ export default {
       seasonHeroesClassAvatar: [],
     };
   },
+  mounted() {
+    if (this.$route.params.id) {
+      this.getSeasonHeroesClass(this.$route.params.id);
+    }
+  },
   computed: {
     ...mapGetters({
       appIsRdy: 'api/appIsRdy',
@@ -54,6 +64,7 @@ export default {
     getSeasonHeroesClass(seasonId) {
       /* eslint-disable */
       const seasonsHeroesClass = this.seasonsHeroesClass();
+
       if (seasonsHeroesClass && seasonsHeroesClass[seasonId]) {
         const seasonHeroesClass = seasonsHeroesClass[seasonId];
         const heroesClassAvatar = this.appAssets().heroesClassAvatar;
@@ -67,6 +78,10 @@ export default {
             imgUrl: heroesClassAvatar[heroClass],
           });
         });
+
+        this.seasonHeroesClassAvatar.sort(function(a, b) { return a.heroClass - b.heroClass });
+
+        this.$router.push({ path: `/season/${seasonId}` });
       }
     },
   },
