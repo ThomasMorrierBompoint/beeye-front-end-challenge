@@ -13,7 +13,7 @@
       <v-progress-linear :indeterminate="indeterminate" :value="progressStatus" height="10" :color="progressColor">
       </v-progress-linear>
     </div>
-    <seasons-tabs v-if="appIsRdy"></seasons-tabs>
+    <season-tabs v-if="appIsRdy"></season-tabs>
     <v-content>
       <router-view/>
     </v-content>
