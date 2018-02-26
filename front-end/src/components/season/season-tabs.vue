@@ -79,7 +79,9 @@ export default {
           });
         });
 
-        this.seasonHeroesClassAvatar.sort(function(a, b) { return a.heroClass - b.heroClass });
+        this.seasonHeroesClassAvatar.sort((a, b) => {
+          return b.heroClass < a.heroClass;
+        });
 
         this.$router.push({ path: `/season/${seasonId}` });
       }
