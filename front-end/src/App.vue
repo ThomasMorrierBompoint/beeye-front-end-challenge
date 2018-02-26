@@ -22,12 +22,12 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
-import SeasonsTabs from '@/components/seasons-tabs/seasons-tabs';
+import SeasonTabs from '@/components/season/season-tabs';
 
 export default {
   name: 'App',
   components: {
-    'seasons-tabs': SeasonsTabs,
+    'season-tabs': SeasonTabs,
   },
   data() {
     return {

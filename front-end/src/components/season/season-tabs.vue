@@ -39,7 +39,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'SeasonsTabs',
+  name: 'SeasonTabs',
   data() {
     return {
       seasonHeroesClassAvatar: [],
