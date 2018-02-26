@@ -1,6 +1,6 @@
-import * as types from '../../mutation-types';
-import blizzD3 from '../../../utils/blizz-d3';
-import appConst from '../const/const';
+import * as types from '@/store/mutation-types';
+import blizzD3 from '@/utils/blizz-d3';
+import appConst from '@/store/modules/const/const';
 // import mock from './mock';
 
 const DEBUG = process.env.NODE_ENV !== 'production';

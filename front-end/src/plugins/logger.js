@@ -3,7 +3,7 @@
 //  From https://github.com/vuejs/vuex/blob/dev/src/plugins/logger.js
 // Credits: borrowed code from fcomb/redux-logger
 
-import { deepCopy } from '../utils/utils';
+import { deepCopy } from '@/utils/utils';
 
 export default function createLogger ({
   collapsed = true,

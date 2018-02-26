@@ -7,7 +7,7 @@
     <br><br><br>
     <h3 v-if="!appIsRdy" class="text-xs-center">
       It was very cool to do. I hope you will like it!<br>
-      I left some comments inside README.md.
+      I left some comments in README.md.
     </h3>
   </v-container>
 </template>

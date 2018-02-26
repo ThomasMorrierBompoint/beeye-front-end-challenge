@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import createLogger from '../plugins/logger';
-import api from './modules/api/api';
+import createLogger from '@/plugins/logger';
+import api from '@/store/modules/api/api';
 
 const DEBUG = process.env.NODE_ENV !== 'production';
 
