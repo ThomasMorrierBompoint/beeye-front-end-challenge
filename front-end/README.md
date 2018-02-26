@@ -11,8 +11,8 @@
 ### Things that went well
 - I've done some Vue.js before but I was fairly new to Vuetify.
   - The learning curve is pretty smooth because it is well documented, thx to the awesome Vue.js community.
-  - For this project I focus on desktop interfaces leaving mobile for a future version.
-- I've try a more verbose approche to my coding style longer variables/functions name.
+  - For this project I focused on desktop interfaces leaving mobile for a future version.
+- I've try a more verbose coding style (longer variables/functions name).
   - It's daunting/difficult and I'm not sure it will pay off in the end but I'm glad I tried it.
 - I try to keep a production level as much as possible and play around with stuff that I never tried before.
 - It's been a very cool experience thanks to giving me this opportunity.

@@ -1,16 +1,15 @@
 <template>
-  <v-layout mt-2 row wrap>
-    <!--
+  <v-layout row wrap>
     <v-flex xs12>
-      <v-card light>
+      <v-card dark class="elevation-15">
         <v-card-text class="text-xs-center">
           <h2>Season {{ $route.params.id }} Hero Class Title + Rift</h2>
         </v-card-text>
       </v-card>
     </v-flex>
-    -->
     <v-flex xs12>
-      <v-card>
+      <v-card
+        class="elevation-15">
         <v-card-title>
           Season {{ $route.params.id }} Hero Class Title + Rift ? Season Last update?
           <v-spacer></v-spacer>
@@ -27,17 +26,33 @@
           :items="items"
           :search="search"
           :rows-per-page-items="rowsPerPageItems">
+          <template slot="headerCell" slot-scope="props">
+            <v-tooltip bottom>
+              <span slot="activator">
+                {{ props.header.text }}
+              </span>
+              <span>
+                {{ props.header.text }}
+              </span>
+            </v-tooltip>
+          </template>
           <template slot="items" slot-scope="props">
-            <td>{{ props.item.name }}</td>
-            <td class="text-xs-center">{{ props.item.calories }}</td>
-            <td class="text-xs-center">{{ props.item.fat }}</td>
-            <td class="text-xs-center">{{ props.item.carbs }}</td>
-            <td class="text-xs-center">{{ props.item.protein }}</td>
-            <td class="text-xs-center">{{ props.item.iron }}</td>
+            <td>{{ props.item.Rank }}</td>
+            <td class="text-xs-center">{{ props.item.BattleTag }}</td>
+            <td class="text-xs-center">{{ props.item.RiftLevel }}</td>
+            <td class="text-xs-center">{{ props.item.RiftTime }}</td>
+            <td class="text-xs-center">{{ props.item.CompletedTime }}</td>
+            <td class="text-xs-center">{{ props.item.HeroGender }}</td>
+            <td class="text-xs-center">{{ props.item.ClanName }}</td>
           </template>
           <template slot="footer">
             <td colspan="100%" class="text-xs-center">
-              <strong>Few stats will be display here</strong>
+              <br>
+              <p><strong>Few stats from (Selected Season && Selected Hero Class) will be display here.</strong></p>
+              <p>Selected Season stats will be display on the right.</p>
+              <p>All Season stats may have another page I don't know yet.</p>
+              <p>I may had a toggle button to switch between selected season and global season.</p>
+              <p>I may put a toggle button to switch between graph and table data.</p>
             </td>
           </template>
           <template slot="no-results">
@@ -63,30 +78,68 @@ export default {
   name: 'SeasonTable',
   data () {
     return {
-      rowsPerPageItems: [10,50,150],
+      rowsPerPageItems: [10,25,50],
       search: '',
       headers: [
-        {
-          text: 'Dessert (100g serving)',
-          align: 'left',
-          sortable: false,
-          value: 'name'
-        },
-        { text: 'Calories', align: 'center', value: 'calories' },
-        { text: 'Fat (g)', align: 'center', value: 'fat' },
-        { text: 'Carbs (g)', align: 'center', value: 'carbs' },
-        { text: 'Protein (g)', align: 'center', value: 'protein' },
-        { text: 'Iron (%)', align: 'center', value: 'iron' }
+        { text: 'Rank', align: 'left', value: 'Rank' },
+        { text: 'BattleTag®', align: 'center', value: 'BattleTag' },
+        { text: 'Tier', align: 'center', value: 'RiftLevel' },
+        { text: 'Time spent', align: 'center', value: 'RiftTime' },
+        { text: 'Completed', align: 'center', value: 'CompletedTime' },
+        { text: 'Hero Gender', align: 'center', value: 'HeroGender' },
+//        { text: 'Hero Clan Tag', align: 'center', value: 'HeroClanTag' },
+        { text: 'Hero Clan Name', align: 'center', value: 'ClanName' },
       ],
       items: [
         {
           value: false,
-          name: 'Frozen Yogurt',
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          iron: '1%'
+          Rank: 1,
+          BattleTag:'Name wadaw',
+          RiftLevel: 153,
+          RiftTime: 13213154,
+          CompletedTime: 13213154,
+          HeroGender: 'M',
+          ClanName: 'Temp name',
+        },
+        {
+          value: false,
+          Rank: 2,
+          BattleTag:'Name awdw',
+          RiftLevel: 143,
+          RiftTime: 13154,
+          CompletedTime: 23213154,
+          HeroGender: 'M',
+          ClanName: 'Temp name',
+        },
+        {
+          value: false,
+          Rank: 3,
+          BattleTag:'Name awda',
+          RiftLevel: 113,
+          RiftTime: 7213154,
+          CompletedTime: 253154,
+          HeroGender: 'F',
+          ClanName: 'Temp name',
+        },
+        {
+          value: false,
+          Rank: 4,
+          BattleTag:'Name awda',
+          RiftLevel: 110,
+          RiftTime: 7213154,
+          CompletedTime: 253154,
+          HeroGender: 'F',
+          ClanName: 'Temp name',
+        },
+        {
+          value: false,
+          Rank: 5,
+          BattleTag:'Name awda',
+          RiftLevel: 109,
+          RiftTime: 7213154,
+          CompletedTime: 253154,
+          HeroGender: 'F',
+          ClanName: 'Temp name',
         },
       ]
     }

@@ -1,5 +1,5 @@
 <template>
-  <v-tabs dark show-arrows>
+  <v-tabs dark show-arrows class="elevation-15">
     <v-tabs-slider color="primary"></v-tabs-slider>
     <v-tab
       v-for="i in appTOTAL_SEASONS"
@@ -9,7 +9,9 @@
       >
       Season {{ i }}
     </v-tab>
-    <v-tabs-items style="position: absolute">
+    <v-tabs-items
+      style="position: absolute"
+      class="elevation-15">
       <v-tab-item
         v-for="i in appTOTAL_SEASONS"
         :key="i"
@@ -105,14 +107,14 @@ export default {
     },
     onGetSeasonHeroClassData() {
       this.getSeasonHeroClassData();
-      setTimeout(() => this.setAppIsLoadingData({ isLoadingData: false }), 400);
+      setTimeout(() => this.setAppIsLoadingData({ isLoadingData: false }), 500);
     },
     onClickHeroeClassAvatar(seasonHeroAvatar) {
       if (!this.appIsLoadingData()) {
         this.setAppIsLoadingData({ isLoadingData: true });
         this.setPagesSelectedHeroClass({ heroClass: seasonHeroAvatar.heroClass });
         this.getSeasonHeroClassData();
-        setTimeout(() => this.setAppIsLoadingData({ isLoadingData: false }), 400);
+        setTimeout(() => this.setAppIsLoadingData({ isLoadingData: false }), 500);
       }
     },
   },
