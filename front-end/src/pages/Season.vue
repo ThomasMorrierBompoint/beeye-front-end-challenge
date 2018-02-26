@@ -1,7 +1,10 @@
 <template>
-  <v-container fluid>
-    <h1 class="text-xs-center">Season {{ $route.params.id }} Page</h1>
-    <season-table></season-table>
+  <v-container fluid grid-list-md>
+    <v-layout row wrap>
+      <v-flex xs10 md11 offset-xs2 offset-md1>
+        <season-table></season-table>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
