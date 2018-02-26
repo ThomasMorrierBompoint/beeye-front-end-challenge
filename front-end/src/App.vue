@@ -10,7 +10,7 @@
       </v-layout>
     </v-snackbar>
     <div>
-      <v-progress-linear :indeterminate="indeterminate" :value="progressStatus" height="10" :color="progressColor">
+      <v-progress-linear :indeterminate="appIsLoadingData" :value="progressStatus" height="10" :color="progressColor">
       </v-progress-linear>
     </div>
     <season-tabs v-if="appIsRdy"></season-tabs>
@@ -32,7 +32,6 @@ export default {
   data() {
     return {
       DEBUG: false,
-      indeterminate: true,
       progressColor: 'info',
       progressStatus: 0,
       snackbar: false,
@@ -43,6 +42,7 @@ export default {
   computed: {
     ...mapGetters({
       appIsRdy: 'api/appIsRdy',
+      appIsLoadingData: 'api/appIsLoadingData',
     }),
   },
   created() {
@@ -71,6 +71,7 @@ export default {
     }),
     ...mapMutations({
       setAppStateRdy: 'api/SET_APP_STATE_RDY',
+      setAppIsLoadingData: 'api/SET_APP_IS_LOADING_DATA',
     }),
     displaySnackbar({ text, delay, timeout }) {
       setTimeout(() => {
@@ -113,7 +114,7 @@ export default {
       const seasonsLeaderboardsLists = this.seasonsLeaderboardsLists();
       const DELAY = (this.DEBUG) ? 250 : 400;
 
-      this.indeterminate = false;
+      this.setAppIsLoadingData({ isLoadingData: false });
 
       /* eslint-disable */
       let ind = 0, allHeroesClass = [];
@@ -146,8 +147,8 @@ export default {
 </script>
 
 <style scoped>
-  .progress-linear {
-    margin-top: 0;
-    margin-bottom: 0;
-  }
+.progress-linear {
+  margin-top: 0;
+  margin-bottom: 0;
+}
 </style>

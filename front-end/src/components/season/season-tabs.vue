@@ -5,7 +5,7 @@
       v-for="i in appTOTAL_SEASONS"
       :key="i"
       :href="'#/season/' + i"
-      v-on:click="getSeasonHeroesClass(i)"
+      v-on:click="onClickSeasonTab(i)"
       >
       Season {{ i }}
     </v-tab>
@@ -21,8 +21,10 @@
           flat
           hover
           style="border-radius: 0"
+          :class="{ 'card-active': seasonHeroAvatar.heroClass === selectedHeroClass }"
           >
-          <v-card-text>
+          <v-card-text
+            v-on:click="onClickHeroeClassAvatar(seasonHeroAvatar)">
             <v-tooltip bottom>
               <v-avatar slot="activator">
                 <img v-bind:src="seasonHeroAvatar.imgUrl" v-bind:alt="seasonHeroAvatar.title" />
@@ -37,7 +39,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 export default {
   name: 'SeasonTabs',
@@ -48,21 +50,32 @@ export default {
   },
   mounted() {
     if (this.$route.params.id) {
-      this.getSeasonHeroesClass(this.$route.params.id);
+      this.onClickSeasonTab(this.$route.params.id);
     }
   },
   computed: {
     ...mapGetters({
       appIsRdy: 'api/appIsRdy',
       appTOTAL_SEASONS: 'api/appTOTAL_SEASONS',
+      selectedHeroClass: 'pages/selectedHeroClass',
     }),
   },
   methods: {
     ...mapGetters({
       appAssets: 'api/appAssets',
+      appIsLoadingData: 'api/appIsLoadingData',
       seasonsHeroesClass: 'api/seasonsHeroesClass',
     }),
-    getSeasonHeroesClass(seasonId) {
+    ...mapActions({
+      getSeasonHeroClassData: 'pages/getSeasonHeroClassData',
+    }),
+    ...mapMutations({
+      setAppIsLoadingData: 'api/SET_APP_IS_LOADING_DATA',
+      setPagesSelectedSeasonId: 'pages/SET_PAGES_SELECTED_SEASON_ID',
+      setPagesSelectedHeroClass: 'pages/SET_PAGES_SELECTED_HERO_CLASS',
+    }),
+    onClickSeasonTab(seasonId) {
+      this.setAppIsLoadingData({ isLoadingData: true });
       /* eslint-disable */
       const seasonsHeroesClass = this.seasonsHeroesClass();
 
@@ -85,8 +98,29 @@ export default {
         });
 
         this.$router.push({ path: `/season/${seasonId}` });
+
+        this.setPagesSelectedSeasonId({ seasonId });
+        this.onGetSeasonHeroClassData();
+      }
+    },
+    onGetSeasonHeroClassData() {
+      this.getSeasonHeroClassData();
+      setTimeout(() => this.setAppIsLoadingData({ isLoadingData: false }), 400);
+    },
+    onClickHeroeClassAvatar(seasonHeroAvatar) {
+      if (!this.appIsLoadingData()) {
+        this.setAppIsLoadingData({ isLoadingData: true });
+        this.setPagesSelectedHeroClass({ heroClass: seasonHeroAvatar.heroClass });
+        this.getSeasonHeroClassData();
+        setTimeout(() => this.setAppIsLoadingData({ isLoadingData: false }), 400);
       }
     },
   },
 };
 </script>
+
+<style scoped>
+.card-active {
+  background-color: #f37d37;  /* TODO Should be bind with vuetify theme variable */
+}
+</style>

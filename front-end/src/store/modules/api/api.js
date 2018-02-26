@@ -17,6 +17,7 @@ const state = {
     locale: 'en_US',
     origin: 'us',
     isRdy: false,
+    isLoadingData: true,
     assets: appConst.assets,
   },
   credential: {},
@@ -30,6 +31,7 @@ const getters = {
   appDEBUG: () => state.app.DEBUG,
   appIsRdy: () => state.app.isRdy,
   appAssets: () => state.app.assets,
+  appIsLoadingData: () => state.app.isLoadingData,
   appTOTAL_SEASONS: () => state.app.TOTAL_SEASONS,
   seasonsTopPlayers: () => state.seasonsTopPlayers,
   seasonsHeroesClass: () => state.seasonsHeroesClass,
@@ -84,8 +86,8 @@ const actions = {
             }
           });
 
-          const seasonHeroClass = { title: data.title[state.app.locale] || data.title['en_US'], row: players };
-          commit(types.SET_SEASON_HERO_CLASS, { seasonId, heroClass, seasonHeroClass });
+          const seasonHeroClassData = { title: data.title[state.app.locale] || data.title['en_US'], row: players };
+          commit(types.SET_SEASON_HERO_CLASS, { seasonId, heroClass, seasonHeroClassData });
 
           TOP_PLAYERS_TMP[seasonId].sort(function(a, b) {
             return b.RiftLevel - a.RiftLevel || a.playerRank - b.playerRank;
@@ -123,11 +125,11 @@ const mutations = {
     data.leaderboard = finalRes;
     state.seasonsLeaderboardsLists[data.season_id] = data;
   },
-  [types.SET_SEASON_HERO_CLASS](state, { seasonId, heroClass, seasonHeroClass }) {
+  [types.SET_SEASON_HERO_CLASS](state, { seasonId, heroClass, seasonHeroClassData }) {
     if (!state.seasonsHeroesClass[seasonId]) {
       state.seasonsHeroesClass[seasonId] = {};
     }
-    state.seasonsHeroesClass[seasonId][heroClass] = seasonHeroClass;
+    state.seasonsHeroesClass[seasonId][heroClass] = seasonHeroClassData;
   },
   [types.SET_SHARED_HEROES_CLASS_DATA](state, { type, data }) {
     if (!state.sharedHeroesClassData[type]) {
@@ -142,6 +144,9 @@ const mutations = {
   },
   [types.SET_APP_STATE_RDY](state, { isRdy }) {
     state.app.isRdy = isRdy;
+  },
+  [types.SET_APP_IS_LOADING_DATA](state, { isLoadingData }) {
+    state.app.isLoadingData = isLoadingData;
   },
 };
 /* eslint-enable */
