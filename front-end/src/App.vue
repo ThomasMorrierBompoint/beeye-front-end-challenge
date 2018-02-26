@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app dark>
     <v-snackbar v-model="snackbar" :timeout="timeout" :top="true">
       <v-layout align-center>
         <v-flex text-xs-center>

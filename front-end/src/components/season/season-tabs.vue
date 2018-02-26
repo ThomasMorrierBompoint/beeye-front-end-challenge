@@ -1,5 +1,5 @@
 <template>
-  <v-tabs dark color="secondary" show-arrows>
+  <v-tabs dark show-arrows>
     <v-tabs-slider color="primary"></v-tabs-slider>
     <v-tab
       v-for="i in appTOTAL_SEASONS"
@@ -20,6 +20,7 @@
           :key="seasonHeroAvatar.heroClass"
           flat
           hover
+          style="border-radius: 0"
           >
           <v-card-text>
             <v-tooltip bottom>

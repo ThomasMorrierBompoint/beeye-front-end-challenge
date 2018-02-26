@@ -1,16 +1,18 @@
 <template>
-  <v-layout row wrap>
+  <v-layout mt-2 row wrap>
+    <!--
     <v-flex xs12>
       <v-card light>
         <v-card-text class="text-xs-center">
-          <h1>Table Season {{ $route.params.id }}</h1>
+          <h2>Season {{ $route.params.id }} Hero Class Title + Rift</h2>
         </v-card-text>
       </v-card>
     </v-flex>
+    -->
     <v-flex xs12>
       <v-card>
         <v-card-title>
-          Nutrition
+          Season {{ $route.params.id }} Hero Class Title + Rift
           <v-spacer></v-spacer>
           <v-text-field
             append-icon="search"
