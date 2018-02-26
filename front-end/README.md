@@ -24,7 +24,8 @@
 - To be honest I was a litle overwhelmed by the amount of data.
   - More precisely I had a hard time figuring out how I would fetch the data without affecting the user experience.
   - I'm not totally happy with the out come.
-    - I'll cache the data if I have time as a quick fix.
+    - I thought I could use localStorage as a quick fix but it turn out to be impossible
+      - LocalStorage quota exceed (their must be some other way to achieve this but I'll have to postpone this issue)
     - I would rather display last season first, lock the user in that view while the rest is loading.
   - I've work with API's before but I kind of forgot how much time it takes to get very confortable with the data flow.
 - Vuex logger is very slow because of (deepCopy function), took me a while to figure it out.

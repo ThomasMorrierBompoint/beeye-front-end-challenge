@@ -1,4 +1,5 @@
 import * as types from '@/store/mutation-types';
+/* eslint-disable */
 import blizzD3 from '@/utils/blizz-d3';
 
 const state = {
@@ -12,7 +13,6 @@ const getters = {
 };
 
 const actions = {
-  /* eslint-disable */
   getSeasonHeroClassData({ commit }, { seasonId, heroClass }) {
     /*  TODO
     blizzD3.GetSeasonData({ seasonId, heroClass })
