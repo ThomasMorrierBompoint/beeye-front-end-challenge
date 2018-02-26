@@ -12,7 +12,7 @@
     <v-flex xs12>
       <v-card>
         <v-card-title>
-          Season {{ $route.params.id }} Hero Class Title + Rift
+          Season {{ $route.params.id }} Hero Class Title + Rift ? Season Last update?
           <v-spacer></v-spacer>
           <v-text-field
             append-icon="search"

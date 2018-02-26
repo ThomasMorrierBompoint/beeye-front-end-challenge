@@ -4,6 +4,17 @@
 
 ## Personal Note
 
+- TODO
+  - In season-tabs onClick Hero Class Avatar
+    - Set URL
+    - Get data (getSeasonHeroClassData)
+    - Set Vuex pages-state Season
+      - Hero Class
+      - Hero Class Title
+      - Column Title
+      - Season Last Update
+    - Finish Table
+
 ### Things that went well
 - I've done some Vue.js before but I'm fairly new to Vuetify.
   - It was pretty smooth it is well documented, the community is awesome.
