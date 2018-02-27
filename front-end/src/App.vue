@@ -89,7 +89,7 @@ export default {
       //  CHANGED Quick fix should be a Promise or async instead of setTimeout
       //  getSeasonsLeaderboardsList().then if ind < array.length call getSeasonHeroClassData again
       const TOTAL_SEASONS = this.appTOTAL_SEASONS();
-      const DELAY = 250;
+      const DELAY = 200;
       const TOTAL_DELAY = (TOTAL_SEASONS + 2) * DELAY;
 
       let seasonNumber = 0;
@@ -113,7 +113,7 @@ export default {
       //  getSeasonHeroClassData().then if ind < array.length call getSeasonHeroClassData again
 
       const seasonsLeaderboardsLists = this.seasonsLeaderboardsLists();
-      const DELAY = (this.DEBUG) ? 250 : 400;
+      const DELAY = (this.DEBUG) ? 250 : 300;
 
       this.setAppIsLoadingData({ isLoadingData: false });
 

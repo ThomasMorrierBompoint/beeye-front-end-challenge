@@ -4,9 +4,9 @@ import appConst from '@/store/const/const';
 // import mock from './mock';
 
 const DEBUG = process.env.NODE_ENV !== 'production';
-const TOTAL_SEASONS = (DEBUG) ? 2 : 12;  //  If you go higher turn of vuex logger
+const TOTAL_SEASONS = (DEBUG) ? 4 : 12;  //  If you go higher turn of vuex logger
 const MAX_ROW = (DEBUG) ? 20 : 125;
-const MAX_TOP_PLAYERS = (DEBUG) ? 22 : 102;  //  102 => give 100 Top player
+const MAX_TOP_PLAYERS = (DEBUG) ? 12 : 102;  //  102 => give 100 Top player
 const TOP_PLAYERS_TMP = {};
 // const MOCK = (DEBUG) ? mock : '';
 

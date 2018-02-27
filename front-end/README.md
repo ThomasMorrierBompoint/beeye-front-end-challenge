@@ -21,6 +21,7 @@
 
 ### Some ideas that I thought would be nice to add (I may try few of them later on)
 - More visualization components
+- Testing (I didn't do anything but config setup is ready)
 - Proper caching handling (Web Workers / IndexedDB)
 - Translation EN/FR using [vue-i18n](https://kazupon.github.io/vue-i18n/en/)
 - Server side rendering using [Nuxt](https://nuxtjs.org/) (Sending out App initial state = less loading)

@@ -27,7 +27,7 @@
               :rotate="360"
               :value="progressStatus"
               color="primary">
-              <h1>{{ Math.floor(progressStatus) }}</h1>
+              <h1>{{ Math.floor(progressStatus) }} %</h1>
             </v-progress-circular>
           </v-card-text>
           <br><br><br>
