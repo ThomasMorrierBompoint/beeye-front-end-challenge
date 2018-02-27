@@ -1,17 +1,26 @@
 <template>
   <v-layout row wrap>
     <v-flex xs12>
-      <v-card dark class="elevation-15">
+      <v-card :dark="appDarkTheme" class="elevation-15">
+        <v-switch
+          v-model="tableSwitch"
+          :label="`${(tableSwitch) ? 'Table' : 'Graphs TODO'}`"
+          style="position: absolute; left: 1.75em; top: 1em;">
+        </v-switch>
         <v-card-text class="text-xs-center">
-          <h2>Season {{ $route.params.id }} Hero Class Title + Rift</h2>
+          <h2>Season {{ $route.params.id }}</h2>
         </v-card-text>
       </v-card>
     </v-flex>
     <v-flex xs12>
-      <v-card
-        class="elevation-15">
+      <v-card class="elevation-15">
         <v-card-title>
-          Season {{ $route.params.id }} Hero Class Title + Rift ? Season Last update?
+          <v-chip color="primary">
+            <v-avatar v-if="getHeroClassAvatarImg()">
+              <img v-bind:src="getHeroClassAvatarImg()" v-bind:alt="selectedHeroesClassData.title">
+            </v-avatar>
+            {{ selectedHeroesClassData.title }}
+          </v-chip>
           <v-spacer></v-spacer>
           <v-text-field
             append-icon="search"
@@ -21,6 +30,13 @@
             v-model="search">
           </v-text-field>
         </v-card-title>
+        <v-card-text>
+          <p class="text-xs-center">
+            <strong>
+              Few stats from (Selected Season && Selected Hero Class) display here.
+            </strong>
+          </p>
+        </v-card-text>
         <v-data-table
           :headers="heroesClassTableHeaders"
           :items="heroesClassTableRow"
@@ -37,31 +53,33 @@
             </v-tooltip>
           </template>
           <template slot="items" slot-scope="props">
-            <td class="text-xs-center">{{ props.item.Rank }}</td>
-            <td class="text-xs-center">{{ props.item.BattleTag }}</td>
-            <td class="text-xs-center">{{ props.item.RiftLevel }}</td>
-            <td class="text-xs-center">{{ props.item.RiftTime }}</td>
-            <td class="text-xs-center">{{ props.item.CompletedTime }}</td>
-            <td class="text-xs-center">{{ props.item.HeroGender }}</td>
-            <td class="text-xs-center">{{ props.item.ClanName }}</td>
+            <td class="text-xs-center">{{ props.item.Rank || 'N/A' }}</td>
+            <td class="text-xs-center">{{ props.item.BattleTag | strHashTagCleaner }}</td>
+            <td class="text-xs-center">{{ props.item.RiftLevel || 'N/A' }}</td>
+            <td class="text-xs-center">{{ props.item.RiftTime | toTime }}</td>
+            <td class="text-xs-center">{{ props.item.CompletedTime | toDateString }}</td>
+            <td class="text-xs-center">{{ props.item.HeroGender || 'N/A' }}</td>
+          <!--
+            <td class="text-xs-center">{{ props.item.ClanName || 'N/A' }}</td>
+          -->
           </template>
           <template slot="footer">
+            <v-btn small color="primary"
+              v-on:click="onToggleAppDarkTheme"
+              style="position: relative; left: 2em; top: 0.22em;">
+              {{ (appDarkTheme) ? 'Dark' : 'Light' }}
+            </v-btn>
             <td colspan="100%" class="text-xs-center">
-              <br>
-              <p><strong>Few stats from (Selected Season && Selected Hero Class) will be display here.</strong></p>
-              <p>Selected Season stats will be display on the right.</p>
-              <p>All Season stats may have another page I don't know yet.</p>
-              <p>I may had a toggle button to switch between selected season and global season.</p>
-              <p>I may put a toggle button to switch between graph and table data.</p>
+              Season Last update
             </td>
           </template>
           <template slot="no-results">
-            <v-alert :value="true" color="error" icon="warning">
+            <v-alert :value="true" color="error" icon="warning" class="text-xs-center">
               Your search for "{{ search }}" found no results.
             </v-alert>
           </template>
           <template slot="no-data">
-            <v-alert :value="true" color="error" icon="warning">
+            <v-alert :value="true" color="error" icon="warning" class="text-xs-center">
               Sorry, nothing to display here :(
             </v-alert>
           </template>
@@ -72,75 +90,74 @@
 </template>
 
 <script>
-/* eslint-disable */
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   name: 'SeasonTable',
-  data () {
+  data() {
     return {
-      rowsPerPageItems: [10,25,50],
       search: '',
-      items: [
-        {
-          value: false,
-          Rank: 1,
-          BattleTag:'Name wadaw',
-          RiftLevel: 153,
-          RiftTime: 13213154,
-          CompletedTime: 13213154,
-          HeroGender: 'M',
-          ClanName: 'Temp name',
-        },
-        {
-          value: false,
-          Rank: 2,
-          BattleTag:'Name awdw',
-          RiftLevel: 143,
-          RiftTime: 13154,
-          CompletedTime: 23213154,
-          HeroGender: 'M',
-          ClanName: 'Temp name',
-        },
-        {
-          value: false,
-          Rank: 3,
-          BattleTag:'Name awda',
-          RiftLevel: 113,
-          RiftTime: 7213154,
-          CompletedTime: 253154,
-          HeroGender: 'F',
-          ClanName: 'Temp name',
-        },
-        {
-          value: false,
-          Rank: 4,
-          BattleTag:'Name awda',
-          RiftLevel: 110,
-          RiftTime: 7213154,
-          CompletedTime: 253154,
-          HeroGender: 'F',
-          ClanName: 'Temp name',
-        },
-        {
-          value: false,
-          Rank: 5,
-          BattleTag:'Name awda',
-          RiftLevel: 109,
-          RiftTime: 7213154,
-          CompletedTime: 253154,
-          HeroGender: 'F',
-          ClanName: 'Temp name',
-        },
-      ]
+      rowsPerPageItems: [10, 25, 50],
+      tableSwitch: true,
+      isDarkTheme: true,
     };
+  },
+  filters: {
+    //  CHANGED Filter should be imported and set globally
+    toDateString(value) {
+      if (!value) return 'N/A';
+      return new Date(value).toDateString();
+    },
+    toTime(ms) {
+      if (!ms) return 'N/A';
+      // eslint-disable-next-line
+      let h, m, s;
+      s = Math.floor(ms / 1000);
+      m = Math.floor(s / 60);
+      s %= 60;
+      h = Math.floor(m / 60);
+      m %= 60;
+      const d = Math.floor(h / 24);
+      h %= 24;
+      let time = (d) ? `${d}d ` : '';
+      time += (h) ? `${h}h ` : '';
+      time += (m) ? `${m}m ` : '';
+      time += (s) ? `${s}s` : '';
+      return time;
+    },
+    strHashTagCleaner(value) {
+      if (!value) return 'N/A';
+      return value.split('#')[0] || 'N/A';
+    },
   },
   computed: {
     ...mapGetters({
       //  NOTE Could be set has a method to save processing power
+      selectedHeroesClassData: 'pages/selectedHeroesClassData',
       heroesClassTableHeaders: 'pages/heroesClassTableHeaders',
       heroesClassTableRow: 'pages/heroesClassTableRow',
+      appDarkTheme: 'api/appDarkTheme',
     }),
+  },
+  methods: {
+    ...mapGetters({
+      appAssets: 'api/appAssets',
+      selectedHeroClass: 'pages/selectedHeroClass',
+    }),
+    ...mapMutations({
+      setAppDarkTheme: 'api/SET_APP_DARK_THEME',
+    }),
+    getHeroClassAvatarImg() {
+      const selectedHeroClass = this.selectedHeroClass();
+      if (selectedHeroClass && this.appAssets().heroesClassAvatar) {
+        return this.appAssets().heroesClassAvatar[selectedHeroClass] || '';
+      }
+      return '';
+    },
+    onToggleAppDarkTheme() {
+      this.setAppDarkTheme({ darkTheme: !this.isDarkTheme });
+      this.isDarkTheme = !this.isDarkTheme;
+    },
   },
 };
 </script>

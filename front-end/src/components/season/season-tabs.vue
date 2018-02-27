@@ -1,12 +1,11 @@
 <template>
-  <v-tabs dark show-arrows class="elevation-15">
+  <v-tabs :dark="appDarkTheme" show-arrows class="elevation-15">
     <v-tabs-slider color="primary"></v-tabs-slider>
     <v-tab
       v-for="i in appTOTAL_SEASONS"
       :key="i"
       :href="'#/season/' + i"
-      v-on:click="onClickSeasonTab(i)"
-      >
+      v-on:click="onClickSeasonTab(i)">
       Season {{ i }}
     </v-tab>
     <v-tabs-items
@@ -15,16 +14,14 @@
       <v-tab-item
         v-for="i in appTOTAL_SEASONS"
         :key="i"
-        :id="'/season/' + i"
-        >
+        :id="'/season/' + i">
         <v-card
           v-for="seasonHeroAvatar in seasonHeroesClassAvatar"
           :key="seasonHeroAvatar.heroClass"
           flat
           hover
           style="border-radius: 0"
-          :class="{ 'card-active': seasonHeroAvatar.heroClass === selectedHeroClass }"
-          >
+          :class="{ 'card-active': seasonHeroAvatar.heroClass === selectedHeroClass }">
           <v-card-text
             v-on:click="onClickHeroeClassAvatar(seasonHeroAvatar)">
             <v-tooltip bottom>
@@ -58,6 +55,7 @@ export default {
   computed: {
     ...mapGetters({
       appIsRdy: 'api/appIsRdy',
+      appDarkTheme: 'api/appDarkTheme',
       appTOTAL_SEASONS: 'api/appTOTAL_SEASONS',
       selectedHeroClass: 'pages/selectedHeroClass',
     }),
@@ -107,14 +105,14 @@ export default {
     },
     onGetSeasonHeroClassData() {
       this.getSeasonHeroClassData();
-      setTimeout(() => this.setAppIsLoadingData({ isLoadingData: false }), 500);
+      setTimeout(() => this.setAppIsLoadingData({ isLoadingData: false }), 750);
     },
     onClickHeroeClassAvatar(seasonHeroAvatar) {
       if (!this.appIsLoadingData()) {
         this.setAppIsLoadingData({ isLoadingData: true });
         this.setPagesSelectedHeroClass({ heroClass: seasonHeroAvatar.heroClass });
         this.getSeasonHeroClassData();
-        setTimeout(() => this.setAppIsLoadingData({ isLoadingData: false }), 500);
+        setTimeout(() => this.setAppIsLoadingData({ isLoadingData: false }), 750);
       }
     },
   },

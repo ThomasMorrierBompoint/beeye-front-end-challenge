@@ -5,7 +5,7 @@ import appConst from '@/store/const/const';
 
 const DEBUG = process.env.NODE_ENV !== 'production';
 const TOTAL_SEASONS = (DEBUG) ? 2 : 12;  //  If you go higher turn of vuex logger
-const MAX_ROW = (DEBUG) ? 25 : 125;
+const MAX_ROW = (DEBUG) ? 20 : 125;
 const MAX_TOP_PLAYERS = (DEBUG) ? 22 : 102;  //  102 => give 100 Top player
 const TOP_PLAYERS_TMP = {};
 // const MOCK = (DEBUG) ? mock : '';
@@ -17,6 +17,7 @@ const state = {
     locale: 'en_US',
     origin: 'us',
     isRdy: false,
+    darkTheme: true,
     isLoadingData: true,
     assets: appConst.assets,
   },
@@ -31,6 +32,7 @@ const getters = {
   appDEBUG: () => state.app.DEBUG,
   appIsRdy: () => state.app.isRdy,
   appAssets: () => state.app.assets,
+  appDarkTheme: () => state.app.darkTheme,
   appIsLoadingData: () => state.app.isLoadingData,
   appTOTAL_SEASONS: () => state.app.TOTAL_SEASONS,
   seasonsTopPlayers: () => state.seasonsTopPlayers,
@@ -144,6 +146,9 @@ const mutations = {
   },
   [types.SET_APP_STATE_RDY](state, { isRdy }) {
     state.app.isRdy = isRdy;
+  },
+  [types.SET_APP_DARK_THEME](state, { darkTheme }) {
+    state.app.darkTheme = darkTheme;
   },
   [types.SET_APP_IS_LOADING_DATA](state, { isLoadingData }) {
     state.app.isLoadingData = isLoadingData;

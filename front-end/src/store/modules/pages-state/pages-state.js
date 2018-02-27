@@ -44,13 +44,18 @@ const actions = {
             players.push(playerTmp);
           });
 
-          //  NOTE As of now order wont matter since it is set in the layout but it may be use full later on.
+          //  NOTE As of now order wont matter since it is already in the right order but it may be use full later on.
           const headers = [];
-          const visibleColumn = ['Rank', 'BattleTag', 'RiftLevel', 'RiftTime', 'CompletedTime', 'HeroGender', 'ClanName'];
-          const orderColumn = { Rank: 0, BattleTag: 1, RiftLevel: 2, RiftTime: 3, CompletedTime: 4, HeroGender: 5, ClanName: 6 };
+          const visibleColumn = ['Rank', 'BattleTag', 'RiftLevel', 'RiftTime', 'CompletedTime', 'HeroGender', /*'ClanName'*/];
+          const orderColumn = { Rank: 0, BattleTag: 1, RiftLevel: 2, RiftTime: 3, CompletedTime: 4, HeroGender: 5, /*ClanName: 6*/ };
           data.column.forEach((column) => {
             if (visibleColumn.indexOf(column.id) !== -1) {
-              headers.push({ order: orderColumn[column.id], value: column.id, align: 'left', text: column.label[rootState.api.app.locale] || column.label['en_US'] });
+              headers.push({
+                order: orderColumn[column.id],
+                value: column.id,
+                align: 'left',
+                text: column.label[rootState.api.app.locale] || column.label['en_US'],
+              });
             }
           });
 

@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app :dark="appDarkTheme">
     <v-snackbar v-model="snackbar" :timeout="timeout" :top="true">
       <v-layout align-center>
         <v-flex text-xs-center>
@@ -42,6 +42,7 @@ export default {
   computed: {
     ...mapGetters({
       appIsRdy: 'api/appIsRdy',
+      appDarkTheme: 'api/appDarkTheme',
       appIsLoadingData: 'api/appIsLoadingData',
     }),
   },
