@@ -6,6 +6,12 @@ const state = {
   season: {
     selectedSeasonId: '',
     selectedHeroClass: '',
+    sharedHeroesClassData: {
+      headers: [],
+    },
+    selectedHeroesClassData: {
+      row: [],
+    },
   },
 };
 
@@ -13,6 +19,10 @@ const getters = {
   season: () => state.season,
   selectedSeasonId: () => state.season.selectedSeasonId,
   selectedHeroClass: () => state.season.selectedHeroClass,
+  sharedHeroesClassData: () => state.season.sharedHeroesClassData,
+  heroesClassTableHeaders: () => state.season.sharedHeroesClassData.headers,
+  heroesClassTableRow: () => state.season.selectedHeroesClassData.row,
+  selectedHeroesClassData: () => state.season.selectedHeroesClassData,
 };
 
 const actions = {
@@ -34,9 +44,19 @@ const actions = {
             players.push(playerTmp);
           });
 
+          //  NOTE As of now order wont matter since it is set in the layout but it may be use full later on.
+          const headers = [];
+          const visibleColumn = ['Rank', 'BattleTag', 'RiftLevel', 'RiftTime', 'CompletedTime', 'HeroGender', 'ClanName'];
+          const orderColumn = { Rank: 0, BattleTag: 1, RiftLevel: 2, RiftTime: 3, CompletedTime: 4, HeroGender: 5, ClanName: 6 };
+          data.column.forEach((column) => {
+            if (visibleColumn.indexOf(column.id) !== -1) {
+              headers.push({ order: orderColumn[column.id], value: column.id, align: 'left', text: column.label[rootState.api.app.locale] || column.label['en_US'] });
+            }
+          });
+
           const seasonHeroClassData = { title: data.title[rootState.api.app.locale] || data.title['en_US'], row: players };
           commit(types.SET_PAGES_SELECTED_HERO_CLASS_DATA, { seasonHeroClassData });
-          commit(types.SET_PAGES_SHARED_HEROES_CLASS_DATA, { type: 'column', data: data.column });
+          commit(types.SET_PAGES_SHARED_HEROES_CLASS_DATA, { type: 'headers', data: headers });
           commit(types.SET_PAGES_SHARED_HEROES_CLASS_DATA, { type: `${seasonId}seasonLastUpdateTime`, data: data.last_update_time });  //  CHANGED Take only one date per season
         } else { console.warn('Error did not receive expected data type: ', data); }
       })

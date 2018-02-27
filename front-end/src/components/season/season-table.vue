@@ -22,8 +22,8 @@
           </v-text-field>
         </v-card-title>
         <v-data-table
-          :headers="headers"
-          :items="items"
+          :headers="heroesClassTableHeaders"
+          :items="heroesClassTableRow"
           :search="search"
           :rows-per-page-items="rowsPerPageItems">
           <template slot="headerCell" slot-scope="props">
@@ -37,7 +37,7 @@
             </v-tooltip>
           </template>
           <template slot="items" slot-scope="props">
-            <td>{{ props.item.Rank }}</td>
+            <td class="text-xs-center">{{ props.item.Rank }}</td>
             <td class="text-xs-center">{{ props.item.BattleTag }}</td>
             <td class="text-xs-center">{{ props.item.RiftLevel }}</td>
             <td class="text-xs-center">{{ props.item.RiftTime }}</td>
@@ -73,6 +73,7 @@
 
 <script>
 /* eslint-disable */
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'SeasonTable',
@@ -80,16 +81,6 @@ export default {
     return {
       rowsPerPageItems: [10,25,50],
       search: '',
-      headers: [
-        { text: 'Rank', align: 'left', value: 'Rank' },
-        { text: 'BattleTag®', align: 'center', value: 'BattleTag' },
-        { text: 'Tier', align: 'center', value: 'RiftLevel' },
-        { text: 'Time spent', align: 'center', value: 'RiftTime' },
-        { text: 'Completed', align: 'center', value: 'CompletedTime' },
-        { text: 'Hero Gender', align: 'center', value: 'HeroGender' },
-//        { text: 'Hero Clan Tag', align: 'center', value: 'HeroClanTag' },
-        { text: 'Hero Clan Name', align: 'center', value: 'ClanName' },
-      ],
       items: [
         {
           value: false,
@@ -142,7 +133,14 @@ export default {
           ClanName: 'Temp name',
         },
       ]
-    }
-  }
+    };
+  },
+  computed: {
+    ...mapGetters({
+      //  NOTE Could be set has a method to save processing power
+      heroesClassTableHeaders: 'pages/heroesClassTableHeaders',
+      heroesClassTableRow: 'pages/heroesClassTableRow',
+    }),
+  },
 };
 </script>
