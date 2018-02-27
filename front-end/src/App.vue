@@ -15,7 +15,7 @@
     </div>
     <season-tabs v-if="appIsRdy"></season-tabs>
     <v-content>
-      <router-view/>
+      <router-view v-bind:progressStatus="progressStatus"/>
     </v-content>
   </v-app>
 </template>

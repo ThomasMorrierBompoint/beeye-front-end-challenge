@@ -38,6 +38,7 @@
           </p>
         </v-card-text>
         <v-data-table
+          v-if="isTableRdy"
           :headers="heroesClassTableHeaders"
           :items="heroesClassTableRow"
           :search="search"
@@ -58,7 +59,7 @@
             <td class="text-xs-center">{{ props.item.RiftLevel || 'N/A' }}</td>
             <td class="text-xs-center">{{ props.item.RiftTime | toTime }}</td>
             <td class="text-xs-center">{{ props.item.CompletedTime | toDateString }}</td>
-            <td class="text-xs-center">{{ props.item.HeroGender || 'N/A' }}</td>
+            <td class="text-xs-center">{{ props.item.HeroGender.toUpperCase() || 'N/A' }}</td>
           <!--
             <td class="text-xs-center">{{ props.item.ClanName || 'N/A' }}</td>
           -->
@@ -97,10 +98,17 @@ export default {
   data() {
     return {
       search: '',
-      rowsPerPageItems: [10, 25, 50],
+      rowsPerPageItems: [10, 25, 50, 100, 250],
       tableSwitch: true,
       isDarkTheme: true,
+      isTableRdy: false,
     };
+  },
+  mounted() {
+    //  CHANGED Quick fix Table would display error no data (flash)...
+    setTimeout(() => {
+      this.isTableRdy = true;
+    }, 1250);
   },
   filters: {
     //  CHANGED Filter should be imported and set globally
